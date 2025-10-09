@@ -1,0 +1,68 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .filter {
+    text-align: center;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+    font-size: 0.8rem;
+  }
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+</style>
+
+<div id="filters">
+  <% 
+    // Define your categories here with icons
+    const categories = [
+      { name: "Trending", icon: "fa-fire" },
+      { name: "Rooms", icon: "fa-bed" },
+      { name: "Iconic Cities", icon: "fa-mountain-city" },
+      { name: "Mountains", icon: "fa-mountain" },
+      { name: "Castles", icon: "fa-chess" },
+      { name: "Amazing Pools", icon: "fa-person-swimming" },
+      { name: "Camping", icon: "fa-campground" },
+      { name: "Farms", icon: "fa-cow" },
+      { name: "Arctic", icon: "fa-snowflake" },
+    ]; 
+  %>
+
+  <% for(let cat of categories){ %>
+    <div class="filter">
+      <form action="/listings/category" method="get">
+        <input type="hidden" name="category" value="<%= cat.name %>">
+        <button style="border: none; background-color: white;"><i class="fa-solid <%= cat.icon %>"></i></button>
+      </form>
+      <p><%= cat.name %></p>
+    </div>
+  <% } %>
+</div>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+  <% if(allListings.length === 0){ %>
+    <p>No listings found for <%= category || "selected category" %>.</p>
+  <% } %>
+
+  <% for(let listing of allListings){ %>
+    <a href="/listings/<%= listing._id %>" class="listing-link">
+      <div class="card col listing-card">
+        <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing_image" style="height: 20rem" />
+        <div class="card-img-overlay"></div>
+        <div class="card-body">
+          <p class="card-text">
+            <b><%= listing.title %></b> <br />
+            &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+          </p>
+        </div>
+      </div>
+    </a>
+  <% } %>
+</div>
