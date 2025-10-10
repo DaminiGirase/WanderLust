@@ -2,6 +2,7 @@ if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
 
+const ExpressError = require("./utils/ExpressError");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -20,7 +21,9 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const port = 8080;
+
+
+const port = process.env.PORT || 8080;
 
 const dburl = process.env.ATLASDB_URL;
 
@@ -105,7 +108,7 @@ app.use("/listings/:id/reviews", reviewRouter);
 
 app.use("/", userRouter);
 
-// app.all("*", (req, res, next) => {
+// app.all("/*", (req, res, next) => {
 //   next(new ExpressError(404, "Page Not Found!"));
 // });
 
